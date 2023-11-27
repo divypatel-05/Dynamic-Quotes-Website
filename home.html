@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Quote Website</title>
+</head>
+<style>
+    .Main{
+        position: absolute;
+        height: 85vh;
+        width: 65vw;
+        background-color: rgb(0, 195, 255);
+        margin-top: 45px;
+        margin-left: 240px;
+        border-radius: 3px;
+    }
+
+    .Primary{
+        box-shadow: 0 0.3rem 2rem rgb(52, 52, 53);
+        position: absolute;
+        height: 70vh;
+        width: 50vw;
+        background-color: white;
+        margin-top: 47px;
+        margin-left: 95px;
+        border-radius: 1.5px;
+    }
+    #btn{
+        width: 50vw;
+        height: 55px;
+        margin-top: 12vh;
+        background-color: rgb(0, 166, 255);
+        border: none;
+        font-size: larger;
+    }
+    #btn:hover{
+        background-color: rgb(0, 160, 255);;
+    }
+    #quote{
+        height: 33vh;
+        width: 42vw;
+        margin-top: 35px;
+        margin-left: 50px;
+        font-style: italic;
+        font-size: 2rem;
+    }
+    #author{
+        width: 16vw;
+        margin-top: 25px;
+        margin-left: 420px;
+    }
+    #tweet{
+        height: 32px;
+        width: 35px;
+        background-color: black;
+        margin-left: 47vw;
+        margin-top: 8px;
+        border-radius: 3px;
+    }
+    #tweet img{
+        height: 23px;
+        width: 23px;
+    }
+</style>
+<body>
+    <div class="Main">
+        <div class="Primary">
+            <button id="tweet"><img src="Images/X Logo.png" alt="TweetThis"></button>
+            <div id="quote">"Life is not a problem to be solved, life is a game to be played "</div>
+            <div id="author">-By Sandeep Maheshwari</div>
+            <button id="btn">New Quote</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    const quote = document.getElementById("quote");
+    const author = document.getElementById("author");
+    const button = document.getElementById("btn");
+    const tweet = document.getElementById("tweet");
+
+    let realData= "";
+    let quotesData= "";
+
+    const tweetMe = () => {
+        let tweetPost = `https://twitter.com/intent/tweet/?text=${quotesData.text}`;
+        window.open(tweetPost);
+    };
+
+    const newQuote = () => {
+        let random = Math.floor(Math.random()*16);
+        quotesData = realData[random];
+        quote.innerHTML = '"' + quotesData.text + '"';
+        author.innerHTML = "By " + quotesData.author;
+    };
+
+    const getQuotes = async () =>{
+        let api = "https://type.fit/api/quotes";
+        let data = await fetch(api);
+        realData = await data.json();
+        newQuote();
+    };
+    getQuotes();
+
+    tweet.addEventListener("click", tweetMe);
+    button.addEventListener("click", newQuote);
+</script>
+</html>
